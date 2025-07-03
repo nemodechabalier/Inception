@@ -14,11 +14,11 @@ RUN mkdir -p /etc/nginx/ssl
 COPY conf/nginx.conf /etc/nginx/nginx.conf
 COPY tools/nginx_start.sh /usr/local/bin/
 
-# Create SSL certificates (self-signed for example)
-RUN  openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
     -keyout /etc/nginx/ssl/nginx.key \
     -out /etc/nginx/ssl/nginx.crt \
-    -subj "/C=FR/ST=Paris/L=Paris/O=42/OU=nde-chab/CN=localhost"
+    -subj "/C=FR/ST=Paris/L=Paris/O=42/OU=nde-chab/CN=nde-chab.42.fr"
+
 
 # Ensure the script is executable
 RUN chmod +x /usr/local/bin/nginx_start.sh

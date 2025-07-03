@@ -12,12 +12,12 @@ services:
   nginx:
     build: ./requirements/nginx
     container_name: nginx
+    depends_on:
+      - wordpress
     ports: 
       - "443:443"
     volumes:
-      - wordpress_data:/var/www/html
-    depends_on:
-      - wordpress
+      - wordpress_data:/var/www/html:ro
     networks:
       - inception_network
     restart: unless-stopped
@@ -46,7 +46,10 @@ services:
       - wp_admin_password
       - wp_user_password
       - db_password
+    depends_on:
+      - mariadb
     environment:
+      WORDPRESS_DB_HOST: mariadb:3306
       WP_ADMIN_USER: ${WP_ADMIN_USER}
       WP_ADMIN_PASSWORD_FILE: /run/secrets/wp_admin_password
       WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
@@ -63,12 +66,22 @@ services:
       - inception_network
 
 
-networks:
-  inception_network:
-
 volumes:
   mariadb_data:
-    name: mariadb_data
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/nde-chab/data/mariadb
+      o: bind
+
   wordpress_data:
-    name: wordpress_data
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/nde-chab/data/wordpress
+      o: bind
+
+networks:
+  inception_network:
+    driver: bridge
 

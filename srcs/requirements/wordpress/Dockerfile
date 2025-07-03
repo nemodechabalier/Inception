@@ -35,9 +35,10 @@ RUN wget https://wordpress.org/latest.tar.gz && \
     chown -R www-data:www-data /var/www/html
 
 # Installation de WP-CLI
-RUN curl -O https://raw.githubusercontent.com/wp-cli/wp-cli/master/utils/wp-completion.bash && \
-    curl -o /usr/local/bin/wp https://github.com/wp-cli/wp-cli/releases/download/v2.8.1/wp-cli-2.8.1.phar && \
-    chmod +x /usr/local/bin/wp
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+    && chmod +x wp-cli.phar \
+    && mv wp-cli.phar /usr/local/bin/wp
+
 
 # Configuration PHP-FPM
 COPY conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
