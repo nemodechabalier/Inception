@@ -4,8 +4,8 @@ setup:
 	@echo "Création des dossiers de données..."
 	@mkdir -p /home/$(USER)/data/wordpress
 	@mkdir -p /home/$(USER)/data/mariadb
-	@sudo chown -R 999:999 /home/nde-chab/data/mariadb 2>/dev/null || true
-	@sudo chown -R 33:33 /home/nde-chab/data/wordpress 2>/dev/null || true
+	@sudo chown -R 999:999 /home/nde-chab/data/mariadb 
+	@sudo chown -R 33:33 /home/nde-chab/data/wordpress
 	@echo "Dossiers créés avec succès !"
 	@cp -r /home/nde-chab/correction/ressources/secrets .
 	@cp -r /home/nde-chab/correction/ressources/.env srcs/

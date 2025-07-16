@@ -9,7 +9,7 @@ RUN apt-get update && apt-get upgrade -y && \
     rm -rf /var/lib/apt/lists/*
 
 # Configuration MariaDB
-COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf.cnf
+COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 COPY tools/mariadb_setup.sh /mariadb_setup.sh
 
 RUN chmod +x /mariadb_setup.sh
