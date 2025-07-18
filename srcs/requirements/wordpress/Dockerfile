@@ -1,4 +1,4 @@
-FROM debian:11
+FROM debian:bullseye
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -42,13 +42,14 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 
 # Configuration PHP-FPM
 COPY conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
-COPY tools/wordpress_setup.sh /wordpress_setup.sh
+COPY tools/setup_wp.sh /usr/local/bin/setup_wp.sh
 
-RUN chmod +x /wordpress_setup.sh
+# Rendre le script exécutable
+RUN chmod +x /usr/local/bin/setup_wp.sh
 
 # Création des répertoires nécessaires
 RUN mkdir -p /run/php
 
 EXPOSE 9000
 
-CMD ["/wordpress_setup.sh"]
+CMD ["/usr/local/bin/setup_wp.sh"]

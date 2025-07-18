@@ -1,37 +1,23 @@
-all: setup build up
+COMPOSE_FILE = ./srcs/docker-compose.yml
+DATA_DIR = $(HOME)/data
 
-setup:
-	@echo "Création des dossiers de données..."
-	@mkdir -p /home/$(USER)/data/wordpress
-	@mkdir -p /home/$(USER)/data/mariadb
-	@sudo chown -R 999:999 /home/nde-chab/data/mariadb 
-	@sudo chown -R 33:33 /home/nde-chab/data/wordpress
-	@echo "Dossiers créés avec succès !"
-	@cp -r /home/nde-chab/correction/ressources/secrets .
-	@cp -r /home/nde-chab/correction/ressources/.env srcs/
+all: build
 
 build:
-	docker compose -f srcs/docker-compose.yml build
-
-up:
-	docker compose -f srcs/docker-compose.yml up -d
+	@mkdir -p $(DATA_DIR)/wordpress
+	@mkdir -p $(DATA_DIR)/mariadb
+	@docker compose -f $(COMPOSE_FILE) up -d --build
 
 down:
-	docker compose -f srcs/docker-compose.yml down
+	@docker compose -f $(COMPOSE_FILE) down
 
-clean: down
-	docker system prune -af
+clean:
+	@docker compose -f $(COMPOSE_FILE) down -v
+	@docker system prune -af
 
 fclean: clean
-	docker volume rm $$(docker volume ls -q) 2>/dev/null || true
-	sudo rm -rf /home/$(USER)/data
+	@sudo rm -rf $(DATA_DIR)
 
 re: fclean all
 
-logs:
-	docker compose -f srcs/docker-compose.yml logs -f
-
-status:
-	docker compose -f srcs/docker-compose.yml ps
-
-.PHONY: all setup build up down clean fclean re logs status
+.PHONY: all build down clean fclean re
