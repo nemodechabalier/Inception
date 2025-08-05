@@ -11,6 +11,9 @@ build:
 down:
 	@docker compose -f $(COMPOSE_FILE) down
 
+up:
+	@docker compose -f $(COMPOSE_FILE) up -d
+
 clean:
 	@docker compose -f $(COMPOSE_FILE) down -v
 	@docker system prune -af
